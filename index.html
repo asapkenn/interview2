@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Contact us</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+  </head>
+  <body>
+  	<div class="container">
+  		<form style="padding: 50px;" method="GET" onsubmit="sub_form()" name="myform">
+  			<div style="margin-bottom: 30px;">
+	  			<h3>Contact Us</h3>
+	  		</div>
+  			
+  			<div class="row">
+
+	  			<div class="mb-3 col-md-6">
+				  <label for="FirstName" class="form-label">First Name</label>
+				  <input type="text" class="form-control" name="firstname" id="FirstName" placeholder="First Name" required>
+				</div>
+
+		  		<div class="mb-3 col-md-6" >
+				  <label for="LastName" class="form-label">Last Name</label>
+				  <input type="text" name="lastname" class="form-control" id="LastName" placeholder="Last Name" required>
+				</div>
+			</div>
+
+			<div class="mb-3">
+			  <label for="PhoneNumber" class="form-label">Phone Number</label>
+			  <input type="tel" name="phone" class="form-control" id="PhoneNumber" placeholder="Phone Number" required>
+			</div>
+
+	  		<div class="mb-3">
+			  <label for="EmailAddress" class="form-label">Email address</label>
+			  <input type="email" name="email" class="form-control" id="EmailAddress" placeholder="Email address" required>
+			</div>
+			<div class="mb-3">
+			  <label for="Message" class="form-label">Message</label>
+			  <textarea class="form-control" name="message" id="Message" rows="3" required></textarea>
+			</div>
+
+			<button type="submit" class="btn btn-outline-primary">Submit</button>
+  		</form>
+
+  	</div>
+  	<script type="text/javascript">
+
+  		
+  		//basic
+		async function load_backend(url){
+	       const response= await fetch(url);
+	       console.log(response);
+	       const data= await response.json();
+	       console.log(data);
+	    }
+
+
+	    //POST method 
+		async function postData(url = "", data = {}) {
+		  
+		  const response = await fetch(url, {
+		    method: "POST", // *GET, POST, PUT, DELETE, etc.
+		    mode: "cors", // no-cors, *cors, same-origin
+		    cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+		    credentials: "same-origin", // include, *same-origin, omit
+		    headers: {
+		      "Content-Type": "application/json",
+		      // 'Content-Type': 'application/x-www-form-urlencoded',
+		    },
+		    redirect: "follow", // manual, *follow, error
+		    referrerPolicy: "no-referrer", // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+		    body: JSON.stringify(data), // body data type must match "Content-Type" header
+		  });
+		  return response.json(); // parses JSON response into native JavaScript objects
+		}
+
+		
+		//Uploading JSON data
+
+		async function postJSON(url,data) {
+		  try {
+		    const response = await fetch(url, {
+		      method: "POST", // or 'PUT'
+		      headers: {
+		        "Content-Type": "application/json",
+		      },
+		      body: JSON.stringify(data),
+		    });
+
+		    const result = await response.json();
+		    console.log("Success:", result);
+		  } catch (error) {
+		    console.error("Error:", error);
+		  }
+		}
+
+		
+
+
+
+
+
+  		function sub_form() {
+
+  			var form_vals=document.forms['myform'];
+  			
+  			var firstname = form_vals["firstname"].value;
+  			var lasttname = form_vals["lastname"].value
+  			var email = form_vals["email"].value;
+  			var phone = form_vals["phone"].value;
+  			var message = form_vals["message"].value;
+  			
+  			console.log(" >> Fisrt Name :"+firstname);
+  			console.log(" >> Last Name :"+lasttname);
+  			console.log(" >> Phone :"+phone);
+  			console.log(" >> Email :"+email);
+  			console.log(" >> Message :"+message);
+
+  			const post_data={
+  				"firstname":firstname,
+  				"lastname":lasttname,
+  				"email":email,
+  				"phone":phone,
+  				"message":message
+  			}
+
+  			//basic
+  			load_backend(`https://example.com/profile?firstname=${firstname}&lastname=${lasttname}&phone=${phone}&email=${email}&message=${message}`);
+
+  			//post 
+  			postData("https://example.com/profile" , post_data ).then((data) => {
+			  console.log(data); // JSON data parsed by `data.json()` call
+			});
+
+			//upload using json
+			postJSON("https://example.com/profile",post_data);
+			//alert(message);
+			//document.write("<br>");
+  		}
+  	</script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+  </body>
+</html>
